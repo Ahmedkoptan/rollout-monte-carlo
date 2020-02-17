@@ -22,6 +22,7 @@ np.random.seed(SEED)
 class Driver:
     def __init__(self, pf, f, c, N, gamma):
         self.pf = pf
+        self.pm = pf
         self.f = f
         self.c = c
         self.N = N
@@ -34,9 +35,9 @@ class Driver:
 
         for i in range(self.N-1,-1,-1):
             if i == self.N-1:
-                Jt[i] = (self.pf[i]*min(self.c[i],self.c[i+1])) + ((1-self.pf[i])*self.c[i+1])
+                Jt[i] = (self.pm[i]*min(self.c[i],self.c[i+1])) + ((1-self.pm[i])*self.c[i+1])
             else:
-                Jt[i] = (self.pf[i]*min(self.c[i],Jt[i+1])) + ((1-self.pf[i])*Jt[i+1])
+                Jt[i] = (self.pm[i]*min(self.c[i],Jt[i+1])) + ((1-self.pm[i])*Jt[i+1])
         #print('Current optimal costs matrix is:\n',Jt)
         return Jt
 
@@ -44,7 +45,7 @@ class Driver:
         r = status[status != 2]
         R = np.mean(r)
         for i in range(k+1,N,1):
-            self.pf[i] = (self.gamma*pf[i]) + ((1-self.gamma)*R)
+            self.pm[i] = (self.gamma*pf[i]) + ((1-self.gamma)*R)
 
 
     def park(self):
