@@ -139,6 +139,7 @@ print('Probability of every spot being free is:\n', pf)
 f = np.zeros_like(pf,int)
 f[np.where(pf>0.3)]=1
 f[np.argmin(c)] = 1
+pf[np.argmin(c)] = 0.1
 data = pd.concat([pd.DataFrame(c[:-1]),pd.DataFrame(pf),pd.DataFrame(f)],axis=1)
 print('Whether every spot is actually free or not:\n', f)
 driver = Driver(pf,f,c,N,gamma)

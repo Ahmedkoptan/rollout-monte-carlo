@@ -2,9 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e0caec0f-b1ad-4d46-86ce-d212ec6e4441" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/exact_dp.py" beforeDir="false" afterPath="$PROJECT_DIR$/exact_dp.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/suboptimal.py" beforeDir="false" afterPath="$PROJECT_DIR$/suboptimal.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -97,26 +97,26 @@
     <servers />
   </component>
   <component name="WindowStateProjectService">
-    <state width="1392" height="245" key="GridCell.Tab.0.bottom" timestamp="1581971416912">
+    <state width="1392" height="245" key="GridCell.Tab.0.bottom" timestamp="1581973312567">
       <screen x="0" y="23" width="1440" height="835" />
     </state>
     <state width="1392" height="268" key="GridCell.Tab.0.bottom/0.23.1440.834@0.23.1440.834" timestamp="1581684062126" />
-    <state width="1392" height="245" key="GridCell.Tab.0.bottom/0.23.1440.835@0.23.1440.835" timestamp="1581971416912" />
-    <state width="1392" height="245" key="GridCell.Tab.0.center" timestamp="1581971416911">
+    <state width="1392" height="245" key="GridCell.Tab.0.bottom/0.23.1440.835@0.23.1440.835" timestamp="1581973312567" />
+    <state width="1392" height="245" key="GridCell.Tab.0.center" timestamp="1581973312566">
       <screen x="0" y="23" width="1440" height="835" />
     </state>
     <state width="1392" height="268" key="GridCell.Tab.0.center/0.23.1440.834@0.23.1440.834" timestamp="1581684062125" />
-    <state width="1392" height="245" key="GridCell.Tab.0.center/0.23.1440.835@0.23.1440.835" timestamp="1581971416911" />
-    <state width="1392" height="245" key="GridCell.Tab.0.left" timestamp="1581971416910">
+    <state width="1392" height="245" key="GridCell.Tab.0.center/0.23.1440.835@0.23.1440.835" timestamp="1581973312566" />
+    <state width="1392" height="245" key="GridCell.Tab.0.left" timestamp="1581973312566">
       <screen x="0" y="23" width="1440" height="835" />
     </state>
     <state width="1392" height="268" key="GridCell.Tab.0.left/0.23.1440.834@0.23.1440.834" timestamp="1581684062125" />
-    <state width="1392" height="245" key="GridCell.Tab.0.left/0.23.1440.835@0.23.1440.835" timestamp="1581971416910" />
-    <state width="1392" height="245" key="GridCell.Tab.0.right" timestamp="1581971416912">
+    <state width="1392" height="245" key="GridCell.Tab.0.left/0.23.1440.835@0.23.1440.835" timestamp="1581973312566" />
+    <state width="1392" height="245" key="GridCell.Tab.0.right" timestamp="1581973312566">
       <screen x="0" y="23" width="1440" height="835" />
     </state>
     <state width="1392" height="268" key="GridCell.Tab.0.right/0.23.1440.834@0.23.1440.834" timestamp="1581684062125" />
-    <state width="1392" height="245" key="GridCell.Tab.0.right/0.23.1440.835@0.23.1440.835" timestamp="1581971416912" />
+    <state width="1392" height="245" key="GridCell.Tab.0.right/0.23.1440.835@0.23.1440.835" timestamp="1581973312566" />
     <state width="1392" height="268" key="GridCell.Tab.1.bottom" timestamp="1581684062124">
       <screen x="0" y="23" width="1440" height="834" />
     </state>
@@ -148,7 +148,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/suboptimal.py</url>
-          <line>153</line>
+          <line>154</line>
           <option name="timeStamp" value="3" />
         </line-breakpoint>
       </breakpoints>
