@@ -26,19 +26,6 @@ class Driver:
         self.N = N
         self.gamma = gamma
 
-    def calc_costs(self):
-        # initialize cost array
-        Jt = np.zeros(self.N + 1, float)
-        Jt[self.N] = c[self.N]
-
-        for i in range(self.N-1,-1,-1):
-            if i == self.N-1:
-                Jt[i] = (self.pm[i]*min(self.c[i],self.c[i+1])) + ((1-self.pm[i])*self.c[i+1])
-            else:
-                Jt[i] = (self.pm[i]*min(self.c[i],Jt[i+1])) + ((1-self.pm[i])*Jt[i+1])
-        #print('Current optimal costs matrix is:\n',Jt)
-        return Jt
-
     def prob_estimate(self,k, status):
         r = status[status != 2]
         R = np.mean(r)
@@ -86,7 +73,8 @@ class Driver:
                     for o in range(n_obs):
                         #Generate observations for remaining m spots based on pm #####HOW MANY???######
                         obs = np.zeros_like(self.f)
-                        obs[(np.where(self.pm>0.3))] = 1
+                        p = np.random.rand(N)
+                        obs[(np.where(self.pm>p))] = 1
                         obs[:i+1] = status[:i+1]
 
                         #Find cost of closest parking spot due to Greedy Heuristic
