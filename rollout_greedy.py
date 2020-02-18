@@ -1,6 +1,4 @@
-#variable travelling cost (in terms of time index)
-#random parking cost
-
+#quadratic parking cost
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -22,6 +20,7 @@ np.random.seed(SEED)
 class Driver:
     def __init__(self, pf, f, c, N, gamma):
         self.pf = pf
+        self.pm = pf
         self.f = f
         self.c = c
         self.N = N
@@ -34,9 +33,9 @@ class Driver:
 
         for i in range(self.N-1,-1,-1):
             if i == self.N-1:
-                Jt[i] = (self.pf[i]*min(self.c[i],self.c[i+1])) + ((1-self.pf[i])*self.c[i+1])
+                Jt[i] = (self.pm[i]*min(self.c[i],self.c[i+1])) + ((1-self.pm[i])*self.c[i+1])
             else:
-                Jt[i] = (self.pf[i]*min(self.c[i],Jt[i+1])) + ((1-self.pf[i])*Jt[i+1])
+                Jt[i] = (self.pm[i]*min(self.c[i],Jt[i+1])) + ((1-self.pm[i])*Jt[i+1])
         #print('Current optimal costs matrix is:\n',Jt)
         return Jt
 
@@ -44,7 +43,7 @@ class Driver:
         r = status[status != 2]
         R = np.mean(r)
         for i in range(k+1,N,1):
-            self.pf[i] = (self.gamma*pf[i]) + ((1-self.gamma)*R)
+            self.pm[i] = (self.gamma*pf[i]) + ((1-self.gamma)*R)
 
 
     def park(self):
@@ -57,6 +56,15 @@ class Driver:
         #define status array
         status = np.zeros_like(self.f)+2
 
+        # at each stage:
+        # observe status, if free:
+        # change the probability pf,
+        # generate observation using probability estimates pm for remaining spots,
+        # find cost of closest parking spot due to greedy heuristic,
+        # average all observations' parking costs for moving right
+        # compare with cost of parking at current spot and select uk
+        # else not free, move forward
+        #Questions: number of simulated observations?
         while not parked and i<=self.N:
 
             # at garage
@@ -72,9 +80,30 @@ class Driver:
                     self.pf[i] = 1.0
                     self.prob_estimate(i,status)
 
-                    Jt = self.calc_costs()
+                    #Jt = self.calc_costs()
+                    n_obs = 20
+                    Jtilda = np.zeros(n_obs,float)
+                    for o in range(n_obs):
+                        #Generate observations for remaining m spots based on pm #####HOW MANY???######
+                        obs = np.zeros_like(self.f)
+                        obs[(np.where(self.pm>0.3))] = 1
+                        obs[:i+1] = status[:i+1]
+
+                        #Find cost of closest parking spot due to Greedy Heuristic
+                        sim = i+1
+                        p = False
+                        while sim<N and not p:
+                            if obs[sim]==1:
+                                Jtilda[o] = c[sim]
+                                p = True
+                            else:
+                                sim += 1
+                        if not p:
+                            Jtilda[o] = c[N]
+                    Qtilda = Jtilda.mean()
+
                     # compare cost with optimal cost of right and left
-                    if self.c[i] <= Jt[i + 1]:
+                    if self.c[i] <= Qtilda:
                         # park if better than or equal to both
                         action = park
                     # else cost of current spot cost is not better than optimal of right
@@ -138,6 +167,7 @@ print('Probability of every spot being free is:\n', pf)
 f = np.zeros_like(pf,int)
 f[np.where(pf>0.3)]=1
 f[np.argmin(c)] = 1
+pf[np.argmin(c)] = 0.1
 data = pd.concat([pd.DataFrame(c[:-1]),pd.DataFrame(pf),pd.DataFrame(f)],axis=1)
 print('Whether every spot is actually free or not:\n', f)
 driver = Driver(pf,f,c,N,gamma)
@@ -153,3 +183,5 @@ plt.plot(np.array([*myN,201]),c)
 
 plt.show()
 data
+
+
