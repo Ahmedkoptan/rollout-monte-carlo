@@ -71,6 +71,7 @@ class Driver:
                     n_obs = 20
                     Jtilda = np.zeros(n_obs,float)
                     for o in range(n_obs):
+                        np.random.seed(o)
                         #Generate observations for remaining m spots based on pm #####HOW MANY???######
                         obs = np.zeros_like(self.f)
                         p = np.random.rand(N)
