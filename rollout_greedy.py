@@ -19,12 +19,13 @@ np.random.seed(SEED)
 
 class Driver:
     def __init__(self, pf, f, c, N, gamma):
-        self.pf = pf
-        self.pm = pf
+        self.pf = pf.copy()
+        self.pm = pf.copy()
         self.f = f
         self.c = c
         self.N = N
         self.gamma = gamma
+
 
     def prob_estimate(self,k, status):
         r = status[status != 2]
@@ -72,23 +73,54 @@ class Driver:
                     Jtilda = np.zeros(n_obs,float)
                     for o in range(n_obs):
                         np.random.seed(o)
-                        #Generate observations for remaining m spots based on pm #####HOW MANY???######
-                        obs = np.zeros_like(self.f)
-                        p = np.random.rand(N)
-                        obs[(np.where(self.pm>p))] = 1
-                        obs[:i+1] = status[:i+1]
+                        #Generate a random probability vector using new seed
+                        probs = np.random.rand(N)
 
                         #Find cost of closest parking spot due to Greedy Heuristic
                         sim = i+1
                         p = False
+                        #set k+1 spot to free and get cost with greedy heuristic
+                        fobs = status.copy()
+                        fobs[sim] = 1
+                        # calculate new pm based on observing all k+1 spots
+                        self.prob_estimate(sim,fobs)
+                        # Generate observations for remaining m spots based on new pm
+                        fobs[(np.where(self.pm > probs))] = 1
+                        fobs[:i + 1] = status[:i + 1]
+                        fobs[sim] = 1
                         while sim<N and not p:
-                            if obs[sim]==1:
-                                Jtilda[o] = c[sim]
+                            if fobs[sim]==1:
+                                Jf = c[sim]
                                 p = True
                             else:
                                 sim += 1
                         if not p:
-                            Jtilda[o] = c[N]
+                            Jf = c[N]
+
+                        #now set k+1 spot to taken and get cost with greedy heuristic
+                        sim = i+1
+                        p = False
+                        nfobs = status.copy()
+                        nfobs[sim] = 0
+                        #calculate new pm based on observing all k+1 spots
+                        self.prob_estimate(sim, nfobs)
+                        # Generate observations for remaining m spots based on new pm
+                        nfobs[(np.where(self.pm > probs))] = 1
+                        nfobs[:i + 1] = status[:i + 1]
+                        nfobs[sim] = 0
+                        while sim<N and not p:
+                            if nfobs[sim] == 1:
+                                Jnf = c[sim]
+                                p = True
+                            else:
+                                sim += 1
+                        if not p:
+                            Jnf = c[N]
+
+                        #obtain probabilistic cost to go with Jtilda and phatm(k+1)
+                        Jtilda[o] = (self.pm[sim]*Jf)+((1-self.pm[sim])*Jnf)
+
+                    #Obtain Monte Carlo simulation average
                     Qtilda = Jtilda.mean()
 
                     # compare cost with optimal cost of right and left
