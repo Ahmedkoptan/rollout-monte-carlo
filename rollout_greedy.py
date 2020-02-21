@@ -16,6 +16,8 @@ TRAVEL = a/2              #travelling cost
 SEED = 40
 ACTIONS = ['park','move right']
 np.random.seed(SEED)
+N_OBS = 20
+
 
 class Driver:
     def __init__(self, pf, f, c, N, gamma):
@@ -68,10 +70,8 @@ class Driver:
                     self.pf[i] = 1.0
                     self.prob_estimate(i,status)
 
-                    #Jt = self.calc_costs()
-                    n_obs = 20
-                    Jtilda = np.zeros(n_obs,float)
-                    for o in range(n_obs):
+                    Jtilda = np.zeros(N_OBS,float)
+                    for o in range(N_OBS):
                         np.random.seed(o)
                         #Generate a random probability vector using new seed
                         probs = np.random.rand(N)
@@ -117,9 +117,8 @@ class Driver:
                         if not p:
                             Jnf = c[N]
 
-                        self.prob_estimate(i,status)
                         #obtain probabilistic cost to go with Jtilda and phatm(k+1)
-                        Jtilda[o] = (self.pm[sim]*Jf)+((1-self.pm[sim])*Jnf)
+                        Jtilda[o] = (self.pm[i+1]*Jf)+((1-self.pm[i+1])*Jnf)
 
                     #Obtain Monte Carlo simulation average
                     Qtilda = Jtilda.mean()
@@ -172,7 +171,7 @@ gamma = 0.7
 
 #for i in range(len(myN)):
 
-N = 200
+N = myrange
 
 c = np.zeros(N + 1)
 for co in range(len(c)):
@@ -189,7 +188,7 @@ print('Probability of every spot being free is:\n', pf)
 f = np.zeros_like(pf,int)
 f[np.where(pf>0.3)]=1
 f[np.argmin(c)] = 1
-pf[np.argmin(c)] = 0.1
+pf[np.argmin(c)] = 0.35
 data = pd.concat([pd.DataFrame(c[:-1]),pd.DataFrame(pf),pd.DataFrame(f)],axis=1)
 print('Whether every spot is actually free or not:\n', f)
 driver = Driver(pf,f,c,N,gamma)
@@ -201,7 +200,7 @@ print('\n\n')
 
 # Plot the surface.
 fig = plt.figure()
-plt.plot(np.array([*myN,201]),c)
+plt.plot(np.array([*myN,N+1]),c)
 
 plt.show()
 data
