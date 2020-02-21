@@ -117,6 +117,7 @@ class Driver:
                         if not p:
                             Jnf = c[N]
 
+                        self.prob_estimate(i,status)
                         #obtain probabilistic cost to go with Jtilda and phatm(k+1)
                         Jtilda[o] = (self.pm[sim]*Jf)+((1-self.pm[sim])*Jnf)
 
